@@ -1,10 +1,13 @@
 #include "ratnet.h"
 #include <stdio.h>		// printf
+#include <stdlib.h>		// atexit
+#include <string.h>		// memcpy, strcmp
+
 
 #if defined(RATNET_WIN32)
 extern struct RNET_eventop win32_eventop;
 #elif defined(RATNET_LINUX)
-
+extern struct RNET_eventop linux_eventop;
 #elif defined(RATNET_FREEBSD)
 
 #endif
@@ -14,6 +17,7 @@ static struct RNET_eventop *my_eventop =
 #if defined(RATNET_WIN32)
 	&win32_eventop;
 #elif defined(RATNET_LINUX)
+	&linux_eventop;
 #elif defined(RATNET_FREEBSD)
 #endif
 
@@ -67,7 +71,7 @@ void RNET_event_loop(const struct timeval *tv)
 	readfds  = evbase.readfds;
 	writefds = evbase.writefds;
 
-	n = select(0, &readfds, &writefds, NULL, tv);
+	n = select(evbase.nfds, &readfds, &writefds, NULL, tv);
 	if ( n == SOCKET_ERROR )
 		RNET_errx("select() fail!");
 

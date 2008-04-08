@@ -6,9 +6,9 @@ extern "C" {
 #endif
 
 // platform switch
-#define RATNET_WIN32
-#undef RATNET_LINUX
-#undef RATNET_LINUX
+#undef RATNET_WIN32
+#define RATNET_LINUX
+#undef RATNET_FREEBSD
 
 
 #if defined(RATNET_WIN32)
@@ -37,6 +37,9 @@ struct RNET_eventop {
 	const char *name;
 	void (*init)(void);
 	void (*shutdown)(void);
+
+	// 0            - ok
+	// SOCKET_ERROR - fail
 	int (*setnonblock)(RNET_socket fd);
 };
 
