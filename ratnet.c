@@ -133,7 +133,7 @@ int RNET_bind_and_listen(RNET_socket fd, const char* addr, int port)
 	// bind & listen
 	RNET_bzero(&in_addr, sizeof(in_addr));
 	in_addr.sin_family      = AF_INET;
-	in_addr.sin_addr.s_addr = inet_addr(addr);
+	in_addr.sin_addr.s_addr = (strcmp(addr, RNET_INADDR_ANY) == 0) ? htonl(INADDR_ANY) : inet_addr(addr);
 	in_addr.sin_port        = htons(port);
 
 	if ( bind(fd, (struct sockaddr *) &in_addr, sizeof(in_addr)) == SOCKET_ERROR )
@@ -152,5 +152,20 @@ int RNET_bind_and_listen(RNET_socket fd, const char* addr, int port)
 RNET_socket RNET_accept(RNET_socket listen_fd)
 {
 	return accept(listen_fd, NULL, NULL);
+}
+
+int RNET_connect(RNET_socket fd, const char* to_addr, int port)
+{
+	struct sockaddr_in addr;
+	
+	RNET_bzero(&addr, sizeof(addr));
+	addr.sin_family      = AF_INET;
+	addr.sin_addr.s_addr = inet_addr(to_addr);
+	addr.sin_port        = htons(port);
+
+	if ( connect(fd, (struct sockaddr *)&addr, sizeof(addr)) == SOCKET_ERROR )
+		return SOCKET_ERROR;
+
+	return 0;
 }
 
