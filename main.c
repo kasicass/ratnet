@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 
-void on_read(RNET_socket fd, short ev, void *arg)
+void on_read(RNET_socket fd, int ev, void *arg)
 {
 	int n;
 	char buf[512];
@@ -38,6 +38,7 @@ void on_accept(RNET_socket fd, int ev, void *arg)
 		RNET_errx("accept() fail!");
 
 	printf("accept ok\n");
+	
 	RNET_event_set(&ev_read, client_fd, EV_READ|EV_PERSIST, on_read, NULL);
 	RNET_event_add(&ev_read);
 }
