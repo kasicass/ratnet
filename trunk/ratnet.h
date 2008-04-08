@@ -57,7 +57,7 @@ struct RNET_event {
 };
 
 
-
+#define	RNET_INADDR_ANY		"RNET_inaddr_any"
 
 
 // ------------------
@@ -92,6 +92,10 @@ int RNET_bind_and_listen(RNET_socket fd, const char* addr, int port);
 // socket_fd      - ok
 // SOCKET_ERROR   - fail
 RNET_socket RNET_accept(RNET_socket listen_fd);
+
+// 0              - ok
+// SOCKET_ERROR   - fail
+int RNET_connect(RNET_socket fd, const char *addr, int port);
 
 
 #ifdef __cplusplus

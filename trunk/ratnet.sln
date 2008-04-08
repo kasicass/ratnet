@@ -1,7 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32", "win32\ratnet.vcproj", "{558A14C8-D4D6-489F-B17F-600E74DA3251}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ratnet", "win32\ratnet.vcproj", "{558A14C8-D4D6-489F-B17F-600E74DA3251}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simple_server", "win32\simple_server.vcproj", "{F08D4160-5C79-4781-9DB1-2DBCBE0A7917}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simple_client", "win32\simple_client.vcproj", "{C7FAD53B-D73E-42EA-99B1-134AED27C820}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +17,14 @@ Global
 		{558A14C8-D4D6-489F-B17F-600E74DA3251}.Debug|Win32.Build.0 = Debug|Win32
 		{558A14C8-D4D6-489F-B17F-600E74DA3251}.Release|Win32.ActiveCfg = Release|Win32
 		{558A14C8-D4D6-489F-B17F-600E74DA3251}.Release|Win32.Build.0 = Release|Win32
+		{F08D4160-5C79-4781-9DB1-2DBCBE0A7917}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F08D4160-5C79-4781-9DB1-2DBCBE0A7917}.Debug|Win32.Build.0 = Debug|Win32
+		{F08D4160-5C79-4781-9DB1-2DBCBE0A7917}.Release|Win32.ActiveCfg = Release|Win32
+		{F08D4160-5C79-4781-9DB1-2DBCBE0A7917}.Release|Win32.Build.0 = Release|Win32
+		{C7FAD53B-D73E-42EA-99B1-134AED27C820}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C7FAD53B-D73E-42EA-99B1-134AED27C820}.Debug|Win32.Build.0 = Debug|Win32
+		{C7FAD53B-D73E-42EA-99B1-134AED27C820}.Release|Win32.ActiveCfg = Release|Win32
+		{C7FAD53B-D73E-42EA-99B1-134AED27C820}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
