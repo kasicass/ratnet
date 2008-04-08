@@ -72,7 +72,7 @@ void RNET_dbgmsg(const char *msg);
 // event func
 void RNET_event_set(struct RNET_event *ev, RNET_socket fd, int events, event_callback func, void *args);
 void RNET_event_add(struct RNET_event *ev);
-void RNET_event_loop();
+void RNET_event_loop(const struct timeval *tv);
 
 
 // ------------------
