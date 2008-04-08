@@ -1,6 +1,7 @@
 #include "ratnet.h"
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 
 void RNET_bzero(void *s, size_t n)
@@ -10,7 +11,9 @@ void RNET_bzero(void *s, size_t n)
 
 void RNET_errx(const char *msg)
 {
-	printf("%s : %d\n", msg, RNET_errno);
+	int my_errno = RNET_errno;
+
+	printf("%s : %d : %s\n", msg, my_errno, strerror(my_errno));
 	exit(-1);
 }
 
@@ -18,3 +21,4 @@ void RNET_dbgmsg(const char *msg)
 {
 	puts(msg);
 }
+

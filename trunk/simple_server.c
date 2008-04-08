@@ -16,7 +16,7 @@ void on_read(RNET_socket fd, int ev, void *arg)
 	n = recv(fd, buf, sizeof(buf)-1, 0);
 	if ( n == SOCKET_ERROR )
 	{
-		if (WSAEWOULDBLOCK == RNET_errno )
+		if (RNET_EAGAIN == RNET_errno )
 		{
 			puts("recv would block");
 			return;
@@ -72,7 +72,8 @@ int main(void)
 
 	while (1)
 	{
-		RNET_event_loop(&timeout);
+		// RNET_event_loop(&timeout);
+		RNET_event_loop(NULL);
 	}
 
 	return 0;

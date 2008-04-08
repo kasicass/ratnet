@@ -17,6 +17,9 @@ typedef SOCKET RNET_socket;
 
 #define	RNET_errno		(WSAGetLastError())
 
+// error code
+#define	RNET_EAGAIN		WSAEWOULDBLOCK
+
 
 #ifdef __cplusplus
 }
