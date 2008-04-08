@@ -1,6 +1,12 @@
 #include "ratnet.h"
 #include <stdio.h>
 
+#if defined(_DEBUG)
+#pragma comment(lib, "..\\debug\\ratnet_d.lib")
+#else
+#pragma comment(lib, "..\\release\\ratnet.lib")
+#endif
+
 
 void on_read(RNET_socket fd, int ev, void *arg)
 {
@@ -57,7 +63,7 @@ int main(void)
 	if ( INVALID_SOCKET == listen_fd )
 		RNET_errx("RNET_create_tcp_socket() fail!");
 
-	if ( RNET_bind_and_listen(listen_fd, "127.0.0.1", 8888) == SOCKET_ERROR )
+	if ( RNET_bind_and_listen(listen_fd, RNET_INADDR_ANY, 8888) == SOCKET_ERROR )
 		RNET_errx("RNET_bind_and_listen() fail!");
 
 
