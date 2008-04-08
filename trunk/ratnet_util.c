@@ -10,7 +10,7 @@ void RNET_bzero(void *s, size_t n)
 
 void RNET_errx(const char *msg)
 {
-	puts(msg);
+	printf("%s : %d\n", msg, RNET_errno);
 	exit(-1);
 }
 
