@@ -15,6 +15,8 @@ extern "C" {
 
 typedef SOCKET RNET_socket;
 
+#define	RNET_errno		(WSAGetLastError())
+
 
 #ifdef __cplusplus
 }
