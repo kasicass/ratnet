@@ -48,6 +48,7 @@ int main(void)
 {
 	RNET_socket listen_fd;
 	struct RNET_event   ev_accept;
+	struct timeval		timeout = { 1, 0 };
 
 
 	RNET_init();
@@ -65,7 +66,7 @@ int main(void)
 
 	while (1)
 	{
-		RNET_event_loop();
+		RNET_event_loop(&timeout);
 	}
 
 	return 0;

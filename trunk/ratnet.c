@@ -53,34 +53,36 @@ void RNET_event_add(struct RNET_event *ev)
 
 	evbase.nfds++;
 
-	if ( ev->events | EV_READ )
+	if ( ev->events & EV_READ )
 		FD_SET(ev->fd, &evbase.readfds);
 
-	if ( ev->events | EV_WRITE )
+	if ( ev->events & EV_WRITE )
 		FD_SET(ev->fd, &evbase.writefds);
 }
 
-void RNET_event_loop()
+void RNET_event_loop(const struct timeval *tv)
 {
 	int i, n;
 	fd_set readfds, writefds;
 	readfds  = evbase.readfds;
 	writefds = evbase.writefds;
 
-	n = select(0, &readfds, &writefds, NULL, NULL);
+	n = select(0, &readfds, &writefds, NULL, tv);
 	if ( n == SOCKET_ERROR )
 		RNET_errx("select() fail!");
 
 	printf("select n = %d\n", n);
+	if ( n == 0 )
+		return;		// timeout
 	
 	for ( i = 0; i < MAX_EVENTS; i++ )
 	{
 		struct RNET_event *ev = &evbase.evlist[i];
 
-		if ( ev->events && (ev->events | EV_READ) && FD_ISSET(ev->fd, &readfds) )
+		if ( ev->events && (ev->events & EV_READ) && FD_ISSET(ev->fd, &readfds) )
 			ev->func(ev->fd, EV_READ, ev->args);
 
-		if ( ev->events && (ev->events | EV_WRITE) && FD_ISSET(ev->fd, &writefds) )
+		if ( ev->events && (ev->events & EV_WRITE) && FD_ISSET(ev->fd, &writefds) )
 			ev->func(ev->fd, EV_WRITE, ev->args);
 	}
 }
