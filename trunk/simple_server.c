@@ -63,7 +63,7 @@ int main(void)
 	if ( INVALID_SOCKET == listen_fd )
 		RNET_errx("RNET_create_tcp_socket() fail!");
 
-	if ( RNET_bind_and_listen(listen_fd, RNET_INADDR_ANY, 8888) == SOCKET_ERROR )
+	if ( RNET_bind_and_listen(listen_fd, RNET_INADDR_ANY, 5678) == SOCKET_ERROR )
 		RNET_errx("RNET_bind_and_listen() fail!");
 
 

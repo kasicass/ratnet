@@ -5,10 +5,14 @@
 extern "C" {
 #endif
 
-// platform switch
-#undef RATNET_WIN32
+// auto detect platform
+#if WIN32
+#define RATNET_WIN32
+#elif defined(__GNUC__)
 #define RATNET_LINUX
-#undef RATNET_FREEBSD
+#elif defined(__WHAT_COULD_BE_HERE__)
+#define RATNET_FREEBSD
+#endif
 
 
 #if defined(RATNET_WIN32)
@@ -75,7 +79,7 @@ void RNET_dbgmsg(const char *msg);
 // event func
 void RNET_event_set(struct RNET_event *ev, RNET_socket fd, int events, event_callback func, void *args);
 void RNET_event_add(struct RNET_event *ev);
-void RNET_event_loop(const struct timeval *tv);
+void RNET_event_loop(struct timeval *tv);
 
 
 // ------------------

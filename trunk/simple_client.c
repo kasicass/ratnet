@@ -10,13 +10,21 @@
 
 void on_write(RNET_socket fd, int ev, void *arg)
 {
+	int n;
+
 	puts("send ...");
-	send(fd, "abc", 3, 0);
 
-	// Sleep(1000);
+	n = send(fd, "abc", 3, 0);
+	printf("n = %d\n", n);
+	if ( n == SOCKET_ERROR )
+		RNET_errx("send() error!");
+
+#if defined(RATNET_WIN32)
+	Sleep(1000);
+#else
 	sleep(1);
+#endif
 }
-
 
 int main(void)
 {
@@ -30,7 +38,7 @@ int main(void)
 	if ( INVALID_SOCKET == sock_fd )
 		RNET_errx("RNET_create_tcp_socket() fail!");
 
-	if ( RNET_connect(sock_fd, "127.0.0.1", 8888) == SOCKET_ERROR )
+	if ( RNET_connect(sock_fd, "192.168.1.177", 5678) == SOCKET_ERROR )
 		RNET_errx("RNET_connect() failed!");
 
 	puts("connect ok");
