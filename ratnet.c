@@ -30,6 +30,9 @@ struct RNET_event_base {
 	fd_set writefds;
 	fd_set exceptfds;
 
+#if !defined(WIN32)
+	int max_fd;
+#endif
 	int nfds;
 	struct RNET_event evlist[MAX_EVENTS];
 };
@@ -57,6 +60,10 @@ void RNET_event_add(struct RNET_event *ev)
 
 	evbase.nfds++;
 
+#if !defined(WIN32)
+	if ( ev->fd >= evbase.max_fd ) evbase.max_fd = ev->fd + 1;
+#endif
+
 	if ( ev->events & EV_READ )
 		FD_SET(ev->fd, &evbase.readfds);
 
@@ -64,14 +71,18 @@ void RNET_event_add(struct RNET_event *ev)
 		FD_SET(ev->fd, &evbase.writefds);
 }
 
-void RNET_event_loop(const struct timeval *tv)
+void RNET_event_loop(struct timeval *tv)
 {
 	int i, n;
+	int max_fd = 0;
 	fd_set readfds, writefds;
 	readfds  = evbase.readfds;
 	writefds = evbase.writefds;
+#if !defined(WIN32)
+	max_fd = evbase.max_fd;
+#endif
 
-	n = select(evbase.nfds, &readfds, &writefds, NULL, tv);
+	n = select(max_fd, &readfds, &writefds, NULL, tv);
 	if ( n == SOCKET_ERROR )
 		RNET_errx("select() fail!");
 
