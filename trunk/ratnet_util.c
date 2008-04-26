@@ -13,7 +13,7 @@ void RNET_errx(const char *msg)
 {
 	int my_errno = RNET_errno;
 
-	printf("%s : %d : %s\n", msg, my_errno, strerror(my_errno));
+	fprintf(stderr, "%s : %d : %s\n", msg, my_errno, strerror(my_errno));
 	exit(-1);
 }
 

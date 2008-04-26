@@ -1,5 +1,5 @@
-#ifndef CODEMATE_RATNET_H
-#define CODEMATE_RATNET_H
+#ifndef RATNET_CORE_H
+#define RATNET_CORE_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -24,6 +24,7 @@ extern "C" {
 #endif
 
 
+#include "ratnet_buffer.h"
 
 /*
 struct eventop {
@@ -54,13 +55,16 @@ struct RNET_eventop {
 #define	EV_WRITE			0x0002
 #define	EV_PERSIST			0x0004
 
-typedef void (*event_callback)(RNET_socket, int, void *);
+struct RNET_event;
+typedef void (*event_callback)(struct RNET_event*, void *);
 
 struct RNET_event {
-	RNET_socket		fd;
-	int				events;
+	RNET_socket	fd;
+	int		events;
 	event_callback	func;
-	void *			args;
+	void *		args;
+
+	int		index;		// index of evbase.evlist[]
 };
 
 
@@ -77,8 +81,10 @@ void RNET_dbgmsg(const char *msg);
 
 // ------------------
 // event func
+struct RNET_event *RNET_event_new();
 void RNET_event_set(struct RNET_event *ev, RNET_socket fd, int events, event_callback func, void *args);
 void RNET_event_add(struct RNET_event *ev);
+void RNET_event_del(struct RNET_event *ev);
 void RNET_event_loop(struct timeval *tv);
 
 
@@ -103,6 +109,18 @@ RNET_socket RNET_accept(RNET_socket listen_fd);
 // 0              - ok
 // SOCKET_ERROR   - fail
 int RNET_connect(RNET_socket fd, const char *addr, int port);
+
+
+// ------------------
+// send/recv func
+
+// nbytes sent    - ok
+// SOCKET_ERROR   - fail
+int RNET_sendbuffer(RNET_socket fd, struct RNET_buffer *buffer);
+
+// nbytes recv    - ok
+// SOCKET_ERROR   - fail
+int RNET_recvbuffer(RNET_socket fd, struct RNET_buffer *buffer);
 
 
 #ifdef __cplusplus
