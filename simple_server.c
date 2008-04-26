@@ -1,19 +1,26 @@
 #include "ratnet.h"
 #include <stdio.h>
+#include <stdlib.h>
 
+#if defined(WIN32)
 #if defined(_DEBUG)
 #pragma comment(lib, "..\\debug\\ratnet_d.lib")
 #else
 #pragma comment(lib, "..\\release\\ratnet.lib")
 #endif
+#endif
 
 
-void on_read(RNET_socket fd, int ev, void *arg)
+void on_read(struct RNET_event *ev, void *arg)
 {
 	int n;
-	char buf[512];
+	struct RNET_buffer *buf;
+	char data[80];
+	RNET_socket fd = ev->fd;
 
-	n = recv(fd, buf, sizeof(buf)-1, 0);
+	buf = RNET_buf_new();
+	n = RNET_recvbuffer(fd, buf);
+	// n = recv(fd, buf, sizeof(buf)-1, 0);
 	if ( n == SOCKET_ERROR )
 	{
 		if (RNET_EAGAIN == RNET_errno )
@@ -30,31 +37,39 @@ void on_read(RNET_socket fd, int ev, void *arg)
 		RNET_errx("client connect close");
 	}
 
-	buf[n] = '\0';
-	printf("recv = %s\n", buf);
+	printf("int8  = %d\n", RNET_buf_pop_int8(buf));
+	printf("int16 = %d\n", RNET_buf_pop_int16(buf));
+	printf("int32 = %d\n", RNET_buf_pop_int32(buf));
+	printf("string  = %s\n", RNET_buf_pop_string(buf));
+
+	RNET_buf_pop_rawdata(buf, data, 2);
+	data[2] = '\0';
+	printf("rawdata = %s\n", data);
 }
 
-void on_accept(RNET_socket fd, int ev, void *arg)
+void on_accept(struct RNET_event *ev, void *arg)
 {
-	RNET_socket client_fd;
-	struct RNET_event ev_read;
+	RNET_socket fd, client_fd;
+	struct RNET_event *ev_read;
 
+	fd = ev->fd;
 	client_fd = RNET_accept(fd);
 	if ( client_fd == INVALID_SOCKET )
 		RNET_errx("accept() fail!");
 
 	printf("accept ok\n");
-	
-	RNET_event_set(&ev_read, client_fd, EV_READ|EV_PERSIST, on_read, NULL);
-	RNET_event_add(&ev_read);
+
+	ev_read = RNET_event_new();
+	RNET_event_set(ev_read, client_fd, EV_READ|EV_PERSIST, on_read, NULL);
+	RNET_event_add(ev_read);
 }
 
 
 int main(void)
 {
 	RNET_socket listen_fd;
-	struct RNET_event   ev_accept;
-	struct timeval		timeout = { 1, 0 };
+	struct RNET_event *ev_accept;
+	// struct timeval		timeout = { 1, 0 };
 
 
 	RNET_init();
@@ -67,8 +82,9 @@ int main(void)
 		RNET_errx("RNET_bind_and_listen() fail!");
 
 
-	RNET_event_set(&ev_accept, listen_fd, EV_READ|EV_PERSIST, on_accept, NULL);
-	RNET_event_add(&ev_accept);
+	ev_accept = RNET_event_new();
+	RNET_event_set(ev_accept, listen_fd, EV_READ|EV_PERSIST, on_accept, NULL);
+	RNET_event_add(ev_accept);
 
 	while (1)
 	{

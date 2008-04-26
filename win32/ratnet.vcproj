@@ -77,7 +77,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy ..\debug\ratnet_d.lib ..\..\main\debug\ratnet_d.lib"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
@@ -171,6 +171,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\ratnet_buffer.c"
+				>
+			</File>
+			<File
 				RelativePath="..\ratnet_util.c"
 				>
 			</File>
@@ -186,6 +190,10 @@
 			>
 			<File
 				RelativePath="..\ratnet.h"
+				>
+			</File>
+			<File
+				RelativePath="..\ratnet_buffer.h"
 				>
 			</File>
 			<File

@@ -1,23 +1,36 @@
 #include "ratnet.h"
 #include <stdio.h>
 
+#if defined(WIN32)
 #if defined(_DEBUG)
 #pragma comment(lib, "..\\debug\\ratnet_d.lib")
 #else
 #pragma comment(lib, "..\\release\\ratnet.lib")
 #endif
+#endif
 
 
-void on_write(RNET_socket fd, int ev, void *arg)
+void on_write(struct RNET_event *ev, void *arg)
 {
 	int n;
+	struct RNET_buffer *buf;
+	RNET_socket fd = ev->fd;
+
+	printf("begin write\n");
+	buf = RNET_buf_new();
+	RNET_buf_push_int8(buf, 64);
+	RNET_buf_push_int16(buf, 64);
+	RNET_buf_push_int32(buf, 64);
+
+	RNET_buf_push_string(buf, "abc");		// c-style
+	RNET_buf_push_rawdata(buf, "abcd", 2);		// c-style
 
 	puts("send ...");
-
-	n = send(fd, "abc", 3, 0);
+	n = RNET_sendbuffer(fd, buf);
+	RNET_buf_free(buf);
 	printf("n = %d\n", n);
 	if ( n == SOCKET_ERROR )
-		RNET_errx("send() error!");
+		RNET_errx("RNET_sendbuffer() error!");
 
 #if defined(RATNET_WIN32)
 	Sleep(1000);
@@ -29,8 +42,7 @@ void on_write(RNET_socket fd, int ev, void *arg)
 int main(void)
 {
 	RNET_socket sock_fd;
-	struct RNET_event   ev_write;
-
+	struct RNET_event *ev_write;
 
 	RNET_init();
 
@@ -44,12 +56,14 @@ int main(void)
 	puts("connect ok");
 
 
-	RNET_event_set(&ev_write, sock_fd, EV_WRITE|EV_PERSIST, on_write, NULL);
-	RNET_event_add(&ev_write);
+	ev_write = RNET_event_new();
+	RNET_event_set(ev_write, sock_fd, EV_WRITE|EV_PERSIST, on_write, NULL);
+	RNET_event_add(ev_write);
 
 	while (1)
 	{
 		RNET_event_loop(NULL);
+		// puts("my loop");
 	}
 
 	return 0;
