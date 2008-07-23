@@ -23,8 +23,34 @@ extern "C" {
 	#include "ratnet_freebsd.h"
 #endif
 
-
 #include "ratnet_buffer.h"
+
+
+#define	RNET_INADDR_ANY		"RNET_inaddr_any"
+
+
+
+// ------------- base type -------------
+
+// events type
+#define	EV_READ				0x0001
+#define	EV_WRITE			0x0002
+#define	EV_PERSIST			0x0004
+
+struct RNET_event;
+typedef void (*event_callback)(struct RNET_event*, void *);
+
+struct RNET_event {
+	RNET_socket	fd;
+	int		events;
+	event_callback	func;
+	void *		args;
+
+#ifdef RATNET_WIN32
+	int		index;
+#endif
+};
+
 
 /*
 struct eventop {
@@ -43,32 +69,15 @@ struct RNET_eventop {
 	void (*init)(void);
 	void (*shutdown)(void);
 
-	// 0            - ok
+	// 0            - ok		// 所有的返回都如此
 	// SOCKET_ERROR - fail
 	int (*setnonblock)(RNET_socket fd);
+
+	int (*addevent)(struct RNET_event *);
+	int (*delevent)(struct RNET_event *);
+
+	int (*dispatch)(int timeout);	// timeout - millisecond
 };
-
-
-
-// events type
-#define	EV_READ				0x0001
-#define	EV_WRITE			0x0002
-#define	EV_PERSIST			0x0004
-
-struct RNET_event;
-typedef void (*event_callback)(struct RNET_event*, void *);
-
-struct RNET_event {
-	RNET_socket	fd;
-	int		events;
-	event_callback	func;
-	void *		args;
-
-	int		index;		// index of evbase.evlist[]
-};
-
-
-#define	RNET_INADDR_ANY		"RNET_inaddr_any"
 
 
 // ------------------
@@ -85,7 +94,7 @@ struct RNET_event *RNET_event_new();
 void RNET_event_set(struct RNET_event *ev, RNET_socket fd, int events, event_callback func, void *args);
 void RNET_event_add(struct RNET_event *ev);
 void RNET_event_del(struct RNET_event *ev);
-void RNET_event_loop(struct timeval *tv);
+void RNET_event_loop(int timeout);
 
 
 // ------------------

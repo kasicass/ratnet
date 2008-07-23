@@ -62,8 +62,7 @@ int main(void)
 
 	while (1)
 	{
-		RNET_event_loop(NULL);
-		// puts("my loop");
+		RNET_event_loop(-1);
 	}
 
 	return 0;

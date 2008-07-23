@@ -34,7 +34,8 @@ void on_read(struct RNET_event *ev, void *arg)
 
 	if ( n == 0 )
 	{
-		RNET_errx("client connect close");
+		printf("conn close: %d\n", fd);
+		RNET_event_del(ev);
 	}
 
 	printf("int8  = %d\n", RNET_buf_pop_int8(buf));
@@ -69,7 +70,6 @@ int main(void)
 {
 	RNET_socket listen_fd;
 	struct RNET_event *ev_accept;
-	// struct timeval		timeout = { 1, 0 };
 
 
 	RNET_init();
@@ -88,8 +88,7 @@ int main(void)
 
 	while (1)
 	{
-		// RNET_event_loop(&timeout);
-		RNET_event_loop(NULL);
+		RNET_event_loop(-1);
 	}
 
 	return 0;
