@@ -19,6 +19,7 @@ typedef SOCKET RNET_socket;
 
 // error code
 #define	RNET_EAGAIN		WSAEWOULDBLOCK
+#define	RNET_EINTR		WSAEINTR
 
 
 #ifdef __cplusplus

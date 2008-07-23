@@ -19,6 +19,8 @@ void RNET_errx(const char *msg)
 
 void RNET_dbgmsg(const char *msg)
 {
-	puts(msg);
+	int my_errno = RNET_errno;
+
+	fprintf(stdout, "%s : %d : %s\n", msg, my_errno, strerror(my_errno));
 }
 

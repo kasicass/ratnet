@@ -8,7 +8,7 @@ extern "C" {
 #endif
 
 /* According to POSIX.1-2001 */
-#include <sys/select.h>
+#include <sys/epoll.h>
 
 /* According to earlier standards */
 #include <sys/time.h>
@@ -23,7 +23,6 @@ extern "C" {
 
 #include <errno.h>
 
-
 #define INVALID_SOCKET		(-1)
 #define SOCKET_ERROR		(-1)
 
@@ -32,6 +31,7 @@ extern "C" {
 
 // error code
 #define	RNET_EAGAIN		EAGAIN
+#define	RNET_EINTR		EINTR
 
 #ifdef __cplusplus
 }
