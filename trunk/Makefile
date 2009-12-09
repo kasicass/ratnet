@@ -1,8 +1,8 @@
 
 CFLAGS=-g -Wall #-static -fpic
 
-LIB_SRC = ratnet.c ratnet_util.c ratnet_linux.c ratnet_win32.c ratnet_buffer.c
-LIB_OBJ = ratnet.o ratnet_util.o ratnet_linux.o ratnet_win32.o ratnet_buffer.o
+LIB_SRC = ratnet.c ratnet_util.c ratnet_linux.c ratnet_freebsd.c ratnet_win32.c ratnet_buffer.c
+LIB_OBJ = ratnet.o ratnet_util.o ratnet_linux.o ratnet_freebsd.o ratnet_win32.o ratnet_buffer.o
 
 all: ratnet demo
 

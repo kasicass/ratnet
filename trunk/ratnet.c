@@ -14,7 +14,7 @@ extern struct RNET_eventop win32_eventop;
 #elif defined(RATNET_LINUX)
 extern struct RNET_eventop linux_eventop;
 #elif defined(RATNET_FREEBSD)
-
+extern struct RNET_eventop freebsd_eventop;
 #endif
 
 // event op
@@ -24,7 +24,7 @@ static struct RNET_eventop *my_eventop =
 #elif defined(RATNET_LINUX)
 	&linux_eventop;
 #elif defined(RATNET_FREEBSD)
-
+	&freebsd_eventop;
 #endif
 
 
