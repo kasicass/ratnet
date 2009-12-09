@@ -1,28 +1,11 @@
-#ifndef RATNET_CORE_H
-#define RATNET_CORE_H
+#ifndef KCODE_RATNET_CORE_H
+#define KCODE_RATNET_CORE_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-// auto detect platform
-#if WIN32
-#define RATNET_WIN32
-#elif defined(__GNUC__)
-#define RATNET_LINUX
-#elif defined(__WHAT_COULD_BE_HERE__)
-#define RATNET_FREEBSD
-#endif
-
-
-#if defined(RATNET_WIN32)
-	#include "ratnet_win32.h"
-#elif defined(RATNET_LINUX)
-	#include "ratnet_linux.h"
-#elif defined(RATNET_FREEBSD)
-	#include "ratnet_freebsd.h"
-#endif
-
+#include "ratnet_platform_detect.h"
 #include "ratnet_buffer.h"
 
 

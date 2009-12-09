@@ -50,7 +50,7 @@ int main(void)
 	if ( INVALID_SOCKET == sock_fd )
 		RNET_errx("RNET_create_tcp_socket() fail!");
 
-	if ( RNET_connect(sock_fd, "192.168.1.177", 5678) == SOCKET_ERROR )
+	if ( RNET_connect(sock_fd, "127.0.0.1", 5678) == SOCKET_ERROR )
 		RNET_errx("RNET_connect() failed!");
 
 	puts("connect ok");
