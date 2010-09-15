@@ -1,0 +1,1 @@
+ratnet2, a light-weight c++ network lib, using libevent2 as the event-dispatching infrastructure.
