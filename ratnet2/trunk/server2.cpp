@@ -26,7 +26,7 @@ public:
 class MySignalHandler : public RN2::SignalHandler {
 public:
 	virtual void OnSignal(int sig) {
-		printf("sigusr1");
+		printf("sigusr1\n");
 		RN2::QuitLoop();
 	}
 };

@@ -11,6 +11,8 @@ public:
 	virtual void OnSignal(int sig) = 0;
 };
 
+void SetSignalHandler(int sig, SignalHandler *sh);
+
 }
 
 #endif

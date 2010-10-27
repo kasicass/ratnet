@@ -15,6 +15,7 @@ void EventLoop() {
 }
 
 void QuitLoop() {
+    event_loopexit(NULL);
 }
 
 }

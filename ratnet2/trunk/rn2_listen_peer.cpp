@@ -6,12 +6,14 @@
 
 namespace RN2 {
 
-ListenPeer::ListenPeer(Acceptor *acceptor_) {
+ListenPeer::ListenPeer(Acceptor *acceptor_)
+{
     assert(acceptor_ != NULL);
     this->acceptor_ = acceptor_;
 }
 
-ListenPeer::~ListenPeer() {
+ListenPeer::~ListenPeer()
+{
 }
 
 void ListenPeer::AddEndpoint(const char *desc1)
@@ -35,8 +37,7 @@ static void ListenPeerCallback(int listenfd, short events, void *arg)
     close(fd);
 }
 
-void ListenPeer::Bind()
-{
+void ListenPeer::Bind() {
     assert(endpoints_.size() != 0);
 
     for ( size_t i = 0; i < endpoints_.size(); i++ )

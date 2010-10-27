@@ -9,4 +9,6 @@
 
 #include "rn2_listen_peer.h"
 
+#include <signal.h>
+
 #endif

@@ -4,13 +4,19 @@
 namespace RN2 {
 
 class Packet;
+class Socket;
 
 class PacketHandler {
 public:
-	PacketHandler() {};
-	virtual ~PacketHandler() {};
+	PacketHandler(Socket *s);
+	virtual ~PacketHandler();
+
+    Socket *GetSocket();
 
 	virtual void OnRecv(RN2::Packet *packet) = 0;
+
+private:
+    Socket *socket_;
 };
 
 }
