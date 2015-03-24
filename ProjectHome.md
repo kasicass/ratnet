@@ -1,0 +1,1 @@
+A light-weight network library, cross-plaform. All the ideas come from libevent, but you can get more control power than using libevent. And the event-emit method is like FreeBSD's kqueue.
